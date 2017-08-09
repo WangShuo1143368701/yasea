@@ -417,4 +417,8 @@ public class SrsCameraView extends GLSurfaceView implements GLSurfaceView.Render
 
         void onGetRgbaFrame(byte[] data, int width, int height);
     }
+
+    public GPUImageFilter getCurrentFilter(){
+        return magicFilter;
+    }
 }

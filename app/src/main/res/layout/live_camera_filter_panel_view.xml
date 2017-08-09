@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<net.ossrs.yasea.demo.FilterControllerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/filter_controller_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="start|top"
+    android:layout_marginLeft="10dip"
+    android:layout_marginRight="10dip"
+    android:layout_marginTop="30dip"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <LinearLayout
+        android:id="@+id/ll_level1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <SeekBar
+            android:id="@+id/seek_bar_skin_beauty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:maxHeight="20dip"
+            android:minHeight="20dip"
+            android:max="100" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="美颜"
+            android:textColor="#ffffff" />
+
+        <TextView
+            android:id="@+id/txtv_skin_blur_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#ffffff" />
+
+    </LinearLayout>
+</net.ossrs.yasea.demo.FilterControllerView>

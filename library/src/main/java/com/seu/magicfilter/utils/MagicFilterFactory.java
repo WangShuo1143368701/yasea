@@ -1,5 +1,6 @@
 package com.seu.magicfilter.utils;
 
+import com.seu.magicfilter.GPUImageBeauty2Filter;
 import com.seu.magicfilter.advanced.MagicAmaroFilter;
 import com.seu.magicfilter.advanced.MagicAntiqueFilter;
 import com.seu.magicfilter.advanced.MagicBeautyFilter;
@@ -65,6 +66,8 @@ public class MagicFilterFactory {
                 return new MagicSkinWhitenFilter();
             case BEAUTY:
                 return new MagicBeautyFilter();
+            case BEAUTY2:
+                return new GPUImageBeauty2Filter();
             case ROMANCE:
                 return new MagicRomanceFilter();
             case SAKURA:

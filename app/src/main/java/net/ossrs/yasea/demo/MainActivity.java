@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.faucamp.simplertmp.RtmpHandler;
+import com.seu.magicfilter.GPUImageBeauty2Filter;
 import com.seu.magicfilter.utils.MagicFilterType;
 
 import net.ossrs.yasea.SrsCameraView;
@@ -28,6 +29,8 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.util.Random;
 
+import static net.ossrs.yasea.demo.R.id.glsurfaceview_camera;
+
 public class MainActivity extends AppCompatActivity implements RtmpHandler.RtmpListener,
                         SrsRecordHandler.SrsRecordListener, SrsEncodeHandler.SrsEncodeListener {
 
@@ -37,9 +40,11 @@ public class MainActivity extends AppCompatActivity implements RtmpHandler.RtmpL
     private Button btnSwitchCamera;
     private Button btnRecord;
     private Button btnSwitchEncoder;
+    private FilterControllerView mFilterControllerView;
+    private SrsCameraView mSrsCameraView;
 
     private SharedPreferences sp;
-    private String rtmpUrl = "rtmp://ossrs.net/" + getRandomAlphaString(3) + '/' + getRandomAlphaDigitString(5);
+    private String rtmpUrl = "rtmp://192.168.10.13/vod/tiger";
     private String recPath = Environment.getExternalStorageDirectory().getPath() + "/test.mp4";
 
     private SrsPublisher mPublisher;
@@ -66,12 +71,23 @@ public class MainActivity extends AppCompatActivity implements RtmpHandler.RtmpL
         btnSwitchCamera = (Button) findViewById(R.id.swCam);
         btnRecord = (Button) findViewById(R.id.record);
         btnSwitchEncoder = (Button) findViewById(R.id.swEnc);
+        mSrsCameraView = (SrsCameraView) findViewById(R.id.glsurfaceview_camera);
+        mFilterControllerView = (FilterControllerView) findViewById(R.id.filter_controller_view);
+        mFilterControllerView.setListener(new FilterControllerView.ProgressListener() {
+            @Override
+            public boolean onProgressChanaged(int level) {
+                if (mSrsCameraView.getCurrentFilter() != null && mSrsCameraView.getCurrentFilter() instanceof GPUImageBeauty2Filter) {
+                    ((GPUImageBeauty2Filter)mSrsCameraView.getCurrentFilter()).setFilterLevel(level);
+                }
+                return false;
+            }
+        });
 
-        mPublisher = new SrsPublisher((SrsCameraView) findViewById(R.id.glsurfaceview_camera));
+        mPublisher = new SrsPublisher((SrsCameraView) findViewById(glsurfaceview_camera));
         mPublisher.setEncodeHandler(new SrsEncodeHandler(this));
         mPublisher.setRtmpHandler(new RtmpHandler(this));
         mPublisher.setRecordHandler(new SrsRecordHandler(this));
-        mPublisher.setPreviewResolution(640, 360);
+        mPublisher.setPreviewResolution(1280, 720);
         mPublisher.setOutputResolution(360, 640);
         mPublisher.setVideoHDMode();
         mPublisher.startCamera();
@@ -141,6 +157,8 @@ public class MainActivity extends AppCompatActivity implements RtmpHandler.RtmpL
                 }
             }
         });
+
+
     }
 
     @Override
@@ -166,7 +184,8 @@ public class MainActivity extends AppCompatActivity implements RtmpHandler.RtmpL
                     mPublisher.switchCameraFilter(MagicFilterType.COOL);
                     break;
                 case R.id.beauty_filter:
-                    mPublisher.switchCameraFilter(MagicFilterType.BEAUTY);
+                    mPublisher.switchCameraFilter(MagicFilterType.BEAUTY2);
+                    mFilterControllerView.setVisibility(View.VISIBLE);
                     break;
                 case R.id.early_bird_filter:
                     mPublisher.switchCameraFilter(MagicFilterType.EARLYBIRD);
@@ -316,16 +335,16 @@ public class MainActivity extends AppCompatActivity implements RtmpHandler.RtmpL
 
     @Override
     public void onRtmpVideoFpsChanged(double fps) {
-        Log.i(TAG, String.format("Output Fps: %f", fps));
+        Log.i("wangshuo", String.format("Output Fps: %f", fps));
     }
 
     @Override
     public void onRtmpVideoBitrateChanged(double bitrate) {
         int rate = (int) bitrate;
         if (rate / 1000 > 0) {
-            Log.i(TAG, String.format("Video bitrate: %f kbps", bitrate / 1000));
+            Log.i("wangshuo", String.format("Video bitrate: %f kbps", bitrate / 1000));
         } else {
-            Log.i(TAG, String.format("Video bitrate: %d bps", rate));
+            Log.i("wangshuo", String.format("Video bitrate: %d bps", rate));
         }
     }
 

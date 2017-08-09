@@ -58,4 +58,8 @@
         android:id="@+id/url"
         android:textColor="@color/accent_material_light" />
 
+    <include layout="@layout/live_camera_filter_panel_view" />
+
+
+
 </RelativeLayout>
